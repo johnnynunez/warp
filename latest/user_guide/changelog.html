@@ -536,11 +536,15 @@ libraries (<code class="docutils literal notranslate"><span class="pre">warp.dll
 or unreadable native version symbols the same way (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1508">GH-1508</a>).</p></li>
 <li><p>Speed up Warp kernel creation, particularly for workloads that declare many kernels programmatically (e.g. dynamic
 factory patterns) (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1486">GH-1486</a>).</p></li>
-<li><p>Improve <code class="docutils literal notranslate"><span class="pre">wp.mesh_query_ray()</span></code> and <code class="docutils literal notranslate"><span class="pre">wp.mesh_query_ray_anyhit()</span></code> BVH traversal performance
-by visiting the nearer child first at each inner node, enabling earlier tightening of the
-closest-hit bound and more aggressive subtree pruning. (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1529">GH-1529</a>)</p></li>
+<li><p>Improve <code class="docutils literal notranslate"><span class="pre">wp.mesh_query_ray()</span></code> and <code class="docutils literal notranslate"><span class="pre">wp.mesh_query_ray_anyhit()</span></code> BVH traversal performance by visiting the nearer child
+first at each inner node, enabling earlier tightening of the closest-hit bound and more aggressive subtree pruning;
+reusing loaded node payloads across traversal stack operations; and using a faster AABB intersection path for
+non-parallel rays. These traversal changes use additional per-thread temporary storage
+(<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1529">GH-1529</a>).</p></li>
 <li><p>Report out-of-bounds shared and register tile indexing with coordinate-specific debug-mode diagnostics, including
 CUDA device-side assertions (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1483">GH-1483</a>).</p></li>
+<li><p>Reject non-<code class="docutils literal notranslate"><span class="pre">None</span></code> return annotations on kernels. Write results to output arguments and either omit the return annotation
+or use <code class="docutils literal notranslate"><span class="pre">-&gt;</span> <span class="pre">None</span></code> (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1471">GH-1471</a>).</p></li>
 </ul>
 </section>
 <section id="fixed">
@@ -591,6 +595,8 @@ register successfully instead of raising <code class="docutils literal notransla
 (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1544">GH-1544</a>).</p></li>
 <li><p>Fix LTO cache collisions and stale FFT metadata handling by using longer cache keys and rebuilding invalid metadata
 (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1511">GH-1511</a>).</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">&#64;wp.overload</span></code> kernel stubs defined in nested scopes to register correctly instead of raising
+<code class="docutils literal notranslate"><span class="pre">IndentationError</span></code> (<a class="reference external" href="https://github.com/NVIDIA/warp/issues/1557">GH-1557</a>).</p></li>
 </ul>
 </section>
 <section id="documentation">
